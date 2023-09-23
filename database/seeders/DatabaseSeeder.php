@@ -7,8 +7,8 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
-
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -63,9 +63,96 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('admin');
 
 
+        $faker = Faker::create();
+        $schools = DB::table('schools')->where('county', 'Broward County')->get();
+
+        foreach ($schools as $school) {
+            for ($i = 0; $i < 10; $i++) {
+                $teacher = User::create([
+                    'name' => $faker->name,
+                    'fname' => $faker->firstName,
+                    'lname' => $faker->lastName,
+                    'phone' => $faker->phoneNumber,
+                    'email' => $faker->unique()->safeEmail,
+                    'password' => bcrypt('password'), // Change 'password' to the desired password
+                    'address' => $faker->streetAddress,
+                    'city' => $faker->city,
+                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'school_id' => $school->id,
+                ]);
+                $teacher->assignRole('teacher');
+                $student = User::create([
+                    'name' => $faker->name,
+                    'fname' => $faker->firstName,
+                    'lname' => $faker->lastName,
+                    'phone' => $faker->phoneNumber,
+                    'email' => $faker->unique()->safeEmail,
+                    'password' => bcrypt('password'), // Change 'password' to the desired password
+                    'address' => $faker->streetAddress,
+                    'city' => $faker->city,
+                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'school_id' => $school->id,
+                ]);
+                $student->assignRole('student');
+
+
+            }
+
+
+        }
 
 
 
+
+        $schools = DB::table('schools')
+            ->where('county', 'Warren County')
+            ->where('state', 'NJ')
+            ->get();
+        foreach ($schools as $school) {
+            for ($i = 0; $i < 10; $i++) {
+                $teacher = User::create([
+                    'name' => $faker->name,
+                    'fname' => $faker->firstName,
+                    'lname' => $faker->lastName,
+                    'phone' => $faker->phoneNumber,
+                    'email' => $faker->unique()->safeEmail,
+                    'password' => bcrypt('password'), // Change 'password' to the desired password
+                    'address' => $faker->streetAddress,
+                    'city' => $faker->city,
+                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'school_id' => $school->id,
+                ]);
+                $teacher->assignRole('teacher');
+                $student = User::create([
+                    'name' => $faker->name,
+                    'fname' => $faker->firstName,
+                    'lname' => $faker->lastName,
+                    'phone' => $faker->phoneNumber,
+                    'email' => $faker->unique()->safeEmail,
+                    'password' => bcrypt('password'), // Change 'password' to the desired password
+                    'address' => $faker->streetAddress,
+                    'city' => $faker->city,
+                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'school_id' => $school->id,
+                ]);
+                $student->assignRole('student');
+
+
+
+            }
+        }
 
     }
 }

@@ -12,4 +12,8 @@ class School extends Model
     protected $fillable = ['name', 'address','city','state','zip','county','lat','lon'];
 
     // Define any relationships, such as hasMany or belongsTo, here
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
