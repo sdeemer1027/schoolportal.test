@@ -48,6 +48,15 @@ class DashboardController extends Controller
 
         }
 
+        if ($user->hasRole('parent')) {
+
+            $students = User::whereHas('roles', function ($query) {
+                $query->where('name', 'student');
+            })->get();
+
+        }
+
+
         return view('dashboard', compact('teachers', 'students','user'));
     }
 }

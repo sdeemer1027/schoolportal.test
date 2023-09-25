@@ -43,7 +43,7 @@
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 This is a Public School Portal
-
+<BR> The following roles are created
                 <pre>
 
         // Create roles
@@ -54,7 +54,7 @@ This is a Public School Portal
         Role::create(['name' => 'counselor']); // Guidance  Counselors
         Role::create(['name' => 'student']);   // Students
         Role::create(['name' => 'parent']);    // Parents
-                    
+
 
                 </pre>
 

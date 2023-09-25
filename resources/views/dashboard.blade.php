@@ -5,6 +5,13 @@
             Teachers
             @endif
             {{ __('Dashboard') }}
+
+
+                @if (auth()->user()->hasRole('parent'))
+                    Are you a Parent   {{-- could be a menu for teacher --}}
+                @endif
+
+
         </h2>
     </x-slot>
 
@@ -15,6 +22,7 @@
                     @if (auth()->user()->hasRole('teacher'))
                    {{-- could be a menu for teacher --}}
                     @endif
+
                 </div>
 
                 @if (auth()->user()->hasRole('admin'))
@@ -48,7 +56,20 @@
                 @endif
 
 
+                @if (auth()->user()->hasRole('parent'))
+                    Are you a Parent   {{-- could be a menu for teacher --}}
 
+
+                    <h2>All Students</h2>
+                    <ul>
+                        @foreach ($students as $student)
+                            <li>{{ $student->name }}</li>
+                        @endforeach
+                    </ul>
+
+
+                @endif
+{{--$user--}}
 
             </div>
         </div>
