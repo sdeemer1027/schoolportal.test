@@ -18,8 +18,6 @@
             body {
                 font-family: 'Nunito', sans-serif;
 
-                background-image: url("/img/Hibbing_High_School_2014.jpg");
-                background-color: #cccccc;
             }
 
 
@@ -27,7 +25,7 @@
 
         </style>
     </head><!--   Hibbing_High_School_2014.jpg    -->
-    <body class="antialiased" >
+    <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
@@ -44,7 +42,21 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+This is a Public School Portal
 
+                <pre>
+
+        // Create roles
+        Role::create(['name' => 'admin']); //Main Admin
+        Role::create(['name' => 'employee']); //Admin Employee
+        Role::create(['name' => 'teacher']);  //Teachers
+        Role::create(['name' => 'coach']);    //Coaches
+        Role::create(['name' => 'counselor']); // Guidance  Counselors
+        Role::create(['name' => 'student']);   // Students
+        Role::create(['name' => 'parent']);    // Parents
+                    
+
+                </pre>
 
 
             </div>
