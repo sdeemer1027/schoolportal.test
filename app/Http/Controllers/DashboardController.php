@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth'); // Apply 'auth' middleware to all methods in this controller
+    }
+
+
+
     public function index()
     {
         $user = Auth::user(); // Get the currently logged-in user

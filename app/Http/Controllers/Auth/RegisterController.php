@@ -65,8 +65,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
-        $parentRole = Role::where('name', 'parent')->first();
       //  return User::create([
             $user = User::create([
             'name' => $data['name'],
@@ -74,13 +72,12 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         // Assign the 'parent' role to the user
-
+        $parentRole = Role::where('name', 'parent')->first();
    //     $user->assignRole('parent');
         $user->assignRole($parentRole);
+        $user->syncRoles($parentRole);
 
-//        $student->assignRole('student');
-
-    //    dd($user);
+        dd($user);
     //    var_dump($user);
 
         return $user;

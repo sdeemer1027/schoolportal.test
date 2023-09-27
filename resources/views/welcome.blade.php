@@ -128,7 +128,7 @@ color:white;
             </div>
         </div>
     </section>
-{{-- 
+{{--
     <footer class="bg-dark text-white text-center py-3">
         <div class="container">
             &copy; 2023 Steven.News
