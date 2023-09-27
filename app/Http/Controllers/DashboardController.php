@@ -33,9 +33,7 @@ class DashboardController extends Controller
         }
 
         if ($user->hasRole('teacher')) {
-    //        dd($user->school_id);
            $schoolid= $user->school_id;
-
             $teachers = User::whereHas('roles', function ($query) {
                 $query->where('name', 'teacher');
             })
@@ -43,8 +41,6 @@ class DashboardController extends Controller
                 ->leftJoin('schools', 'users.school_id', '=', 'schools.id') // Join the schools table
                 ->select('users.*', 'schools.name as school_name') // Select the school name as 'school_name'
                 ->get();
-
-
             $students = User::whereHas('roles', function ($query) {
                 $query->where('name', 'student');
             })
@@ -57,11 +53,9 @@ class DashboardController extends Controller
         }
 
         if ($user->hasRole('parent')) {
-
             $students = User::whereHas('roles', function ($query) {
                 $query->where('name', 'student');
             })->get();
-
         }
 
 

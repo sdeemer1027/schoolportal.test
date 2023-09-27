@@ -1,9 +1,4 @@
 
-{{--$user--}}
-
-
-
-
 @if ($teachers->isNotEmpty())
     <table id="teacherTable" class="display">
         <thead>

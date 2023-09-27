@@ -75,9 +75,9 @@ class RegisterController extends Controller
         $parentRole = Role::where('name', 'parent')->first();
    //     $user->assignRole('parent');
         $user->assignRole($parentRole);
-        $user->syncRoles($parentRole);
 
-        dd($user);
+
+    //    dd($user);
     //    var_dump($user);
 
         return $user;

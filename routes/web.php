@@ -3,6 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ParentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +65,13 @@ Route::middleware(['role:student'])->group(function () {
 });
 
 Route::middleware(['role:parent'])->group(function () {
-    // Routes accessible only by admins
+
+    Route::prefix('parents')->group(function () {
+        Route::get('{id}', [ParentController::class, 'show'])->name('parents.show');
+        Route::get('{id}/students', [ParentController::class, 'manageStudents'])->name('parents.students');
+        Route::get('{id}/teachers', [ParentController::class, 'manageTeachers'])->name('parents.teachers');
+    });
+
 });
 
 Route::middleware(['permission:create articles'])->group(function () {

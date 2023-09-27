@@ -22,7 +22,9 @@
                     @if (auth()->user()->hasRole('teacher'))
                    {{-- could be a menu for teacher --}}
                     @endif
-
+                    @if (auth()->user()->hasRole('parent'))
+                            Children - Teachers
+                    @endif
                 </div>
 
                 @if (auth()->user()->hasRole('admin'))
@@ -57,19 +59,12 @@
 
 
                 @if (auth()->user()->hasRole('parent'))
-                    Are you a Parent   {{-- could be a menu for teacher --}}
 
+                    @include('parent.parent-content')
 
-                    <h2>All Students</h2>
-                    <ul>
-                        @foreach ($students as $student)
-                            <li>{{ $student->name }}</li>
-                        @endforeach
-                    </ul>
 
 
                 @endif
-{{--$user--}}
 
             </div>
         </div>
