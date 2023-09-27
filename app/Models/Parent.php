@@ -9,6 +9,11 @@ class Parent extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'school_id',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

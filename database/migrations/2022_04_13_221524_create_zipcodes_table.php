@@ -33,7 +33,7 @@ return new class extends Migration
             $table->timestamps();
         });
 /*
- *
+ */
 
         Zipcode::truncate();
         $csvFile = fopen(base_path("database/data/zips.csv"), "r");
@@ -59,7 +59,7 @@ return new class extends Migration
         }
 
         fclose($csvFile);
-
+/*
 */
 
 

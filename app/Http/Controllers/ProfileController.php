@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\School;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -16,8 +18,53 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+
+        $user = $request->user();
+        $userZip = $user->zip; // Get the user's ZIP code
+
+        // Check if the user's ZIP code is not null
+        if (!empty($userZip)) {
+            // Query to retrieve schools within 25 miles of the user's ZIP code
+// Assuming you have the user's latitude and longitude in $userLatitude and $userLongitude
+$zipinfo= DB::table('zipcodes')->where('zip',$userZip)->first();
+
+            $userLatitude=$zipinfo->lat;
+            $userLongitude=$zipinfo->lng;
+  //          dd($userZip,$userLatitude,$userLongitude,$zipinfo);
+
+
+// Query to retrieve schools within 25 miles of the user's location
+            $schoolsWithin25Miles = DB::table('schools')
+                ->select('schools.id', 'schools.name', 'schools.address', 'schools.city', 'schools.state', 'schools.zip')
+                ->join('zipcodes', 'schools.zip', '=', 'zipcodes.zip')
+                ->whereRaw("
+        3959 * ACOS(
+            SIN(RADIANS(zipcodes.lat)) * SIN(RADIANS(?))
+            + COS(RADIANS(zipcodes.lat)) * COS(RADIANS(?))
+            * COS(RADIANS(zipcodes.lng - ?))
+        ) <= 25", [$userLatitude, $userLatitude, $userLongitude])
+                ->get();
+
+// Dump the results to inspect
+   //         dd($schoolsWithin25Miles);
+
+            $uniqueStates = School::distinct()->pluck('state');
+
+            return view('profile.edit', [
+                'user' => $user,
+                'uniqueStates' => $uniqueStates,
+                'schoolsWithin25Miles' => $schoolsWithin25Miles,
+            ]);
+        }
+
+
+        $uniqueStates = School::distinct()->pluck('state');
+
+//dd($uniqueStates);
         return view('profile.edit', [
             'user' => $request->user(),
+            'uniqueStates' => $uniqueStates, // Pass the unique states as a parameter
+
         ]);
     }
 
@@ -26,11 +73,27 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+
+        $user = $request->user();
+
+        // Update the user's zip attribute
+        $user->zip = $request->input('zip');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
+        $user->address2 = $request->input('address2');
+        $user->city = $request->input('city');
+        $user->state = $request->input('state');
+
+
         $request->user()->fill($request->validated());
+
+
+ //       dd($request);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+
 
         $request->user()->save();
 

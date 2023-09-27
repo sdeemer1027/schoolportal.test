@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 //use App\User;
 
 class DashboardController extends Controller
@@ -56,6 +59,61 @@ class DashboardController extends Controller
             $students = User::whereHas('roles', function ($query) {
                 $query->where('name', 'student');
             })->get();
+
+
+//            $user = $request->user();
+            $userZip = $user->zip; // Get the user's ZIP code
+
+            // Check if the user's ZIP code is not null
+            if (!empty($userZip)) {
+                // Query to retrieve schools within 25 miles of the user's ZIP code
+// Assuming you have the user's latitude and longitude in $userLatitude and $userLongitude
+                $zipinfo= DB::table('zipcodes')->where('zip',$userZip)->first();
+
+                $userLatitude=$zipinfo->lat;
+                $userLongitude=$zipinfo->lng;
+                //          dd($userZip,$userLatitude,$userLongitude,$zipinfo);
+
+
+// Query to retrieve schools within 25 miles of the user's location
+                $schoolsWithin25Miles = DB::table('schools')
+                    ->select('schools.id', 'schools.name', 'schools.address', 'schools.city', 'schools.state', 'schools.zip')
+                    ->join('zipcodes', 'schools.zip', '=', 'zipcodes.zip')
+                    ->whereRaw("
+        3959 * ACOS(
+            SIN(RADIANS(zipcodes.lat)) * SIN(RADIANS(?))
+            + COS(RADIANS(zipcodes.lat)) * COS(RADIANS(?))
+            * COS(RADIANS(zipcodes.lng - ?))
+        ) <= 25", [$userLatitude, $userLatitude, $userLongitude])
+                    ->get();
+
+// Dump the results to inspect
+                //         dd($schoolsWithin25Miles);
+
+                $uniqueStates = School::distinct()->pluck('state');
+
+   //             return view('profile.edit', [
+   //                 'user' => $user,
+   //                 'uniqueStates' => $uniqueStates,
+   //                 'schoolsWithin25Miles' => $schoolsWithin25Miles,
+   //             ]);
+                return view('dashboard', compact('teachers', 'students','user','uniqueStates','schoolsWithin25Miles'));
+
+            }
+
+
+            $uniqueStates = School::distinct()->pluck('state');
+
+//dd($uniqueStates);
+//            return view('profile.edit', [
+//                'user' => $request->user(),
+//                'uniqueStates' => $uniqueStates, // Pass the unique states as a parameter
+
+//            ]);
+            return view('dashboard', compact('teachers', 'students','user','uniqueStates'));
+
+
+
         }
 
 

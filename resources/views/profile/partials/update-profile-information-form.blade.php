@@ -22,7 +22,43 @@
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
+        <div>
+            <x-input-label for="phone">Phone</x-input-label>
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required autofocus autocomplete="phone" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+        <div>
+            <x-input-label for="address">Street Address</x-input-label>
+            <x-text-input id="address" name="address" type="text" class="mt-1 block w-full" :value="old('address', $user->address)" required autofocus autocomplete="address" />
+            <x-text-input id="address2" name="address2" type="text" class="mt-1 block w-full" :value="old('address2', $user->address2)"
+                          placeholder="Addition Address if needed"
+                          autocomplete="address" />
+            <x-input-error class="mt-2" :messages="$errors->get('address')" />
+        </div>
 
+        <div>
+            <x-input-label for="zip">ZipCode</x-input-label>
+            <x-text-input id="zip" name="zip" type="text" class="mt-1 block w-full" :value="old('zip', $user->zip)" required autofocus autocomplete="zip" />
+            <x-input-error class="mt-2" :messages="$errors->get('zip')" />
+        </div>
+
+        <div>
+            <x-input-label for="city">City/State</x-input-label>
+            <x-text-input id="city" name="city" type="text" class="mt-1 block w-full"
+                          :value="old('city', $user->city)" required autofocus autocomplete="city" />
+            <x-input-error class="mt-2" :messages="$errors->get('city')" />
+        </div>
+        <div>
+            <x-input-label for="state">State</x-input-label>
+            <select id="state" name="state" class="mt-1 block w-full" required autofocus autocomplete="state">
+                <option value="" disabled>Select a state</option>
+                @foreach($uniqueStates as $uniqueState)
+                    <option value="{{$uniqueState}}" @if(old('state', $user->state) === $uniqueState) selected @endif>{{$uniqueState}}</option>
+                @endforeach
+            </select>
+            {{--$uniqueStates--}}
+            <x-input-error class="mt-2" :messages="$errors->get('state')" />
+        </div>
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
