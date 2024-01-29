@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\StudentInfoController;
 
 
 /*
@@ -79,7 +80,7 @@ Route::middleware(['permission:create articles'])->group(function () {
 });
 
 
-
+Route::resource('student-info', StudentInfoController::class);
 
 
 
