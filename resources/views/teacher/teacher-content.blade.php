@@ -22,10 +22,10 @@
     </table>
 @endif
 
-
+ <div class="p-6">
 
 @if ($students->isNotEmpty())
-
+students
     <table id="studentTable" class="display">
         <thead>
         <tr>
@@ -47,3 +47,4 @@
         </tbody>
     </table>
 @endif
+</div>
