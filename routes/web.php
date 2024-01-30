@@ -5,7 +5,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentInfoController;
-
+use App\Http\Controllers\ClassroomSessionController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,11 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['role:admin'])->group(function () {
     // Routes accessible only by admins
+Route::get('/admin/schools', [AdminController::class, 'schools'])->name('admin.schools');
+    Route::post('/hire-teacher', [AdminController::class, 'hireTeacher'])->name('admin.hire_teacher');
+    Route::post('/assign-teacher-to-classroom/{teacher}/{classroom}', [AdminController::class, 'assignTeacherToClassroom'])->name('admin.assign_teacher_to_classroom');
+    Route::post('/assign-student-to-classroom/{student}/{classroom}', [AdminController::class, 'assignStudentToClassroom'])->name('admin.assign_student_to_classroom');
+
 });
 
 Route::middleware(['role:employee'])->group(function () {
@@ -82,6 +88,11 @@ Route::middleware(['permission:create articles'])->group(function () {
 
 Route::resource('student-info', StudentInfoController::class);
 
+// Define routes for Classroom Sessions
+Route::prefix('classroom-sessions')->group(function () {
+    Route::get('/', [ClassroomSessionController::class, 'index'])->name('classroom-sessions.index');
+    // Add other routes for creating, updating, deleting, etc.
+});
 
 
 

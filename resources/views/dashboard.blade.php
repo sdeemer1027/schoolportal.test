@@ -19,6 +19,18 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-white-100 text-white">
+
+
+
+  @if (auth()->user()->hasRole('admin'))
+                   {{-- could be a menu for teacher --}}
+                   {{$user}}
+<hr>
+
+                   <a href="{{route('admin.schools')}}">Schools</a>
+                    @endif
+
+
                     @if (auth()->user()->hasRole('teacher'))
                    {{-- could be a menu for teacher --}}
                     @endif
