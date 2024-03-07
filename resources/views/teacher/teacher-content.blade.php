@@ -1,3 +1,10 @@
+<span style=color:#fff>
+{{$user->school_id}}
+
+</span>
+{{--$user--}}
+
+{{$teachers}}
 
 @if ($teachers->isNotEmpty())
     <table id="teacherTable" class="display">
