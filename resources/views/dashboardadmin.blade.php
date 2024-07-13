@@ -1,15 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-black-800 dark:text-back-200 leading-tight">
-            @if (auth()->user()->hasRole('teacher'))
-            Teachers
-
-
-            @endif
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-black-200 leading-tight">
+           
             {{ __('Dashboard') }}
-                @if (auth()->user()->hasRole('parent'))
-                    Are you a Parent   {{-- could be a menu for teacher --}}
-                @endif
+              
             {{$user->name}}
 
         </h2>
@@ -20,32 +14,18 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-white-100 text-white">
+                <div class="p-6 text-gray-900 dark:text-blck-100 text-black">
 
 
 
   @if (auth()->user()->hasRole('admin'))
                    
 
-
-
-                   {{$user}}
-<hr>
-
                    <a href="{{route('admin.schools')}}" class="btn btn-primary">Schools</a>
                     @endif
 
 
-                    @if (auth()->user()->hasRole('teacher'))
-                   {{-- could be a menu for teacher --}}
-                    @endif
-                    @if (auth()->user()->hasRole('parent'))
-                            Children - Teachers
-                    @endif
-                    @if (auth()->user()->hasRole('student'))
-                            Children - Teachers
-                            {{$user}}
-                    @endif
+                    
                 </div>
 
                 @if (auth()->user()->hasRole('admin'))
@@ -65,7 +45,7 @@
                             <h2>All Students</h2>
                             <ul>
                                 @foreach ($students as $student)
-                                    <li>{{ $student->name }} - {{ $student->email }} --</li>
+                                    <li>{{ $student->name }} - {{ $student->email }}</li>
                                 @endforeach
                             </ul>
                         @endif
@@ -74,25 +54,7 @@
 
                 @endif
 
-                @if (auth()->user()->hasRole('teacher'))
-                    @include('teacher.teacher-content')
-                @endif
-
-
-                @if (auth()->user()->hasRole('parent'))
-
-                    @include('parent.parent-content')
-
-
-
-                @endif
-                @if (auth()->user()->hasRole('student'))
-
-                    @include('student.student-content')
-
-
-
-                @endif
+               
 
             </div>
         </div>

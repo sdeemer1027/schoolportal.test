@@ -16,6 +16,8 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+
                 </div>
             </div>
 
@@ -38,6 +40,16 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+
+                   @if (auth()->user()->hasRole('teacher'))
+                   {{-- could be a menu for teacher --}}
+                    <x-dropdown-link :href="route('teacher.classroom')">
+                            {{ __('Classroom') }}
+                            </x-dropdown-link>
+                    @endif
+
+
+
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -84,6 +96,13 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+
+                   @if (auth()->user()->hasRole('teacher'))
+                   {{-- could be a menu for teacher --}}
+                    <x-dropdown-link :href="route('teacher.classroom')">
+                            {{ __('Classroom') }}
+                            </x-dropdown-link>
+                    @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">

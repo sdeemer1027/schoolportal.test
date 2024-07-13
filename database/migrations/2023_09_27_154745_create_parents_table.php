@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique(); // Link to User
             $table->unsignedBigInteger('school_id'); // Link to School
+          //  $table->unsignedBigInteger('student_id'); // Link to Student
 
             // Add other parent-related columns
             $table->timestamps();

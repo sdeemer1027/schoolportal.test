@@ -1,18 +1,35 @@
 <span style=color:#fff>
-{{$user->school_id}}
 
+{{$user}}
+
+@if ($schoolName)
+    <h2>Your School Details</h2>
+    <p>Name: {{ $schoolName->name }}</p>
+    <p>Address: {{ $schoolName->address }}</p>
+    <p>City: {{ $schoolName->city }}, {{ $schoolName->state }} {{ $schoolName->zip }}</p>
+    <p>Phone: {{ $schoolName->phone }}</p>
+@else
+    <p>No school details found.</p>
+@endif
 </span>
-{{--$user--}}
+<BR>
+{{--$user->school_id--}}
+{{--$schoolName}}
 
-{{$teachers}}
+{{$schoolN--}}
+
+{{--$user--}}
+{{--$students--}}
+{{--$teachers--}}
 
 @if ($teachers->isNotEmpty())
     <table id="teacherTable" class="display">
         <thead>
         <tr>
             <th>Name</th>
-            <th>Email</th>
-            <th>school</th>
+            <th>Contact</th>
+            <th>School</th>
+            <th>Address</th>
             <!-- Add more table headers as needed -->
         </tr>
         </thead>
@@ -20,8 +37,9 @@
         @foreach ($teachers as $teacher)
             <tr>
                 <td>{{ $teacher->name }}</td>
-                <td>{{ $teacher->email }}</td>
+                <td>{{ $teacher->email }}<br>{{ $teacher->phone }}</td>
                 <td>{{-- $teacher->school_id --}}{{ $teacher->school_name }}</td>
+                <td>{{ $teacher->school_address }}<BR>{{ $teacher->school_city }}</td>
                 <!-- Add more table cells for other columns -->
             </tr>
         @endforeach

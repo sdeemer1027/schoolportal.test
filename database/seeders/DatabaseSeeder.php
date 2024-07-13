@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
+use App\Models\Teacher;
+use App\Models\Classroom;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -76,14 +78,16 @@ class DatabaseSeeder extends Seeder
                     'email' => $faker->unique()->safeEmail,
                     'password' => bcrypt('password'), // Change 'password' to the desired password
                     'address' => $faker->streetAddress,
-                    'city' => $faker->city,
-                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'city' => $school->city,
+                    'state' => $school->state, //'FL',  // Generates a two-letter state abbreviation (e.g., "CA" for California)
                     'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
                     'created_at' => now(),
                     'updated_at' => now(),
                     'school_id' => $school->id,
                 ]);
                 $teacher->assignRole('teacher');
+               
+               for ($x = 0; $x < 10; $x++) { 
                 $student = User::create([
                     'name' => $faker->name,
                     'fname' => $faker->firstName,
@@ -92,14 +96,16 @@ class DatabaseSeeder extends Seeder
                     'email' => $faker->unique()->safeEmail,
                     'password' => bcrypt('password'), // Change 'password' to the desired password
                     'address' => $faker->streetAddress,
-                    'city' => $faker->city,
-                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'city' => $school->city,
+                    'state' => $school->state, // 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
                     'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
                     'created_at' => now(),
                     'updated_at' => now(),
                     'school_id' => $school->id,
                 ]);
                 $student->assignRole('student');
+            }
+
 
 
             }
@@ -124,14 +130,16 @@ class DatabaseSeeder extends Seeder
                     'email' => $faker->unique()->safeEmail,
                     'password' => bcrypt('password'), // Change 'password' to the desired password
                     'address' => $faker->streetAddress,
-                    'city' => $faker->city,
-                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'city' => $school->city,
+                    'state' => $school->state, 
                     'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
                     'created_at' => now(),
                     'updated_at' => now(),
                     'school_id' => $school->id,
                 ]);
                 $teacher->assignRole('teacher');
+
+                 for ($x = 0; $x < 10; $x++) { 
                 $student = User::create([
                     'name' => $faker->name,
                     'fname' => $faker->firstName,
@@ -140,8 +148,8 @@ class DatabaseSeeder extends Seeder
                     'email' => $faker->unique()->safeEmail,
                     'password' => bcrypt('password'), // Change 'password' to the desired password
                     'address' => $faker->streetAddress,
-                    'city' => $faker->city,
-                    'state' => 'FL', //$faker->stateAbbr, // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'city' => $school->city,
+                    'state' => $school->state,
                     'zip' => $school->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -149,10 +157,42 @@ class DatabaseSeeder extends Seeder
                 ]);
                 $student->assignRole('student');
 
+            }
+
+
 
 
             }
         }
+
+//$teachertab = DB::table()
+
+ // Retrieve users with the 'teacher' role
+        $teacherUsers = User::role('teacher')->get();
+
+        // Loop through teacher users and create records in the teachers table
+        foreach ($teacherUsers as $teacherUser) {
+            $teacher = Teacher::create([
+                'user_id'   => $teacherUser->id,
+                'school_id' => $teacherUser->school_id,
+                // Add other fields as needed
+            ]);
+
+ 
+ // Create a classroom for each teacher
+            $classroom = Classroom::create([
+      //          'school_id' => $teacherUser->school_id,
+                // Add other fields as needed
+            ]);
+
+            // Attach the teacher to the classroom_teacher pivot table
+            $teacher->classrooms()->attach($classroom->id);
+
+
+
+
+        }
+
 
     }
 }

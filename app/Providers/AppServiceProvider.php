@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+//use App\Models\Role;
+//use Spatie\Permission\Models\Role;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+
+//        $this->app->bind('role', function ($app) {
+//        return new Role();
+//    });
+
+        
     }
 
     /**
