@@ -20,32 +20,29 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-white-100 text-white">
+                <div class="p-6 text-gray-900 ">
 
 
 
-  @if (auth()->user()->hasRole('admin'))
-                   
-
-
-
+                @if (auth()->user()->hasRole('admin'))
+              
                    {{$user}}
-<hr>
-
+                   <hr>
                    <a href="{{route('admin.schools')}}" class="btn btn-primary">Schools</a>
-                    @endif
+                @endif
 
-
-                    @if (auth()->user()->hasRole('teacher'))
+                @if (auth()->user()->hasRole('teacher'))
                    {{-- could be a menu for teacher --}}
-                    @endif
-                    @if (auth()->user()->hasRole('parent'))
+                @endif
+
+                @if (auth()->user()->hasRole('parent'))
                             Children - Teachers
-                    @endif
-                    @if (auth()->user()->hasRole('student'))
+                @endif
+
+                @if (auth()->user()->hasRole('student'))
                             Children - Teachers
                             {{$user}}
-                    @endif
+                @endif
                 </div>
 
                 @if (auth()->user()->hasRole('admin'))

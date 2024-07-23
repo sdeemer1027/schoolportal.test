@@ -49,14 +49,7 @@ Route::get('/admin/schools/getschool/{id}', [AdminController::class, 'getschool'
 
 Route::get('/admin/schools/getclassroom/{id}', [AdminController::class, 'getclassroom'])->name('admin.getclassroom');
 
-
-
-
-
-Route::get('/classroom', [TeacherController::class, 'classrom'])->name('teacher.classroom');
-
-
-
+Route::get('/classroom', [TeacherController::class, 'classroom'])->name('teacher.classroom');
 
 Route::resource('student-info', StudentInfoController::class);
 
@@ -67,6 +60,7 @@ Route::prefix('classroom-sessions')->group(function () {
 });
 
 
+Route::get('parent/family', [ParentController::class, 'showFamily'])->name('parent.family');
 
 
 

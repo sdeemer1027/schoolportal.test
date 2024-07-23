@@ -15,7 +15,7 @@ class TeacherController extends Controller
     
 
 
-     public function classrom()
+     public function classroom()
     {
        $user = Auth::user(); // Get the currently logged-in user
 

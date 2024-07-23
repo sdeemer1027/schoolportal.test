@@ -18,6 +18,11 @@ class Classroom extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'classroom_student', 'classroom_id', 'student_id');
+        return $this->belongsToMany(Student::class, 'classroom_students');
     }
+
+//     public function students()
+//    {
+//        return $this->belongsToMany(Student::class, 'classroom_students');
+//    }
 }

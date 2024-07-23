@@ -70,6 +70,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Teacher::class);
     }
+    
+ public function homeroomTeacher(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'homeroom_teacher_id')->whereHas('roles', function ($query) {
+            $query->where('name', 'teacher');
+        });
+    }
+
 
 
 }

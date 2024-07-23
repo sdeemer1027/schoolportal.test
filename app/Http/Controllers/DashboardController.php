@@ -203,24 +203,19 @@ if ($user->hasRole('teacher')) {
 
 // parent role
         if ($user->hasRole('parent')) {
-            $students = User::whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            })->get();
-
-            $userZip = $user->zip; // Get the user's ZIP code
+             $students = '';
+             $userZip = $user->zip; // Get the user's ZIP code
 
             // Check if the user's ZIP code is not null
             if (!empty($userZip)) {
                 // Query to retrieve schools within 25 miles of the user's ZIP code
-// Assuming you have the user's latitude and longitude in $userLatitude and $userLongitude
+                // Assuming you have the user's latitude and longitude in $userLatitude and $userLongitude
                 $zipinfo= DB::table('zipcodes')->where('zip',$userZip)->first();
 
                 $userLatitude=$zipinfo->lat;
                 $userLongitude=$zipinfo->lng;
-                //          dd($userZip,$userLatitude,$userLongitude,$zipinfo);
-
-
-// Query to retrieve schools within 25 miles of the user's location
+               
+                // Query to retrieve schools within 25 miles of the user's location
                 $schoolsWithin25Miles = DB::table('schools')
                     ->select('schools.id', 'schools.name', 'schools.address', 'schools.city', 'schools.state', 'schools.zip')
                     ->join('zipcodes', 'schools.zip', '=', 'zipcodes.zip')
@@ -232,9 +227,6 @@ if ($user->hasRole('teacher')) {
         ) <= 25", [$userLatitude, $userLatitude, $userLongitude])
                     ->get();
 
-// Dump the results to inspect
-                //         dd($schoolsWithin25Miles);
-
                 $uniqueStates = School::distinct()->pluck('state');
 
             return view('dashboard', compact('teachers', 'students','user','uniqueStates','schoolsWithin25Miles' ,'schoolName'));
@@ -245,16 +237,24 @@ if ($user->hasRole('teacher')) {
             $uniqueStates = School::distinct()->pluck('state');
            return view('dashboard', compact('teachers', 'students','user','uniqueStates','schoolName'));
         }
-//end parten role
- if ($user->hasRole('student')) {
+//end parent role
 
-$student= Student::where('user_id', $user->id)->get();
-//->with('parents')
+         if ($user->hasRole('student')) {
+            $student= Student::where('user_id', $user->id)
+            ->with('classrooms')
+            ->get();
+               //->with('parents')
+         //dd($student,$user);
+
+             return view('dashboardstudent', compact('teachers', 'user','schoolName','student'));
+        }
+
+$studentinnfo= '';
 
 
-dd($student,$user);
- }
 
-        return view('dashboard', compact('teachers', 'students','user','schoolName'));
+        return view('dashboard', compact('teachers', 'user','schoolName','students'));
+    
     }
+
 }

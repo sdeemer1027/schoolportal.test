@@ -1,4 +1,4 @@
-<span style=color:#fff>
+<span style=color:#000>
 
 {{$user}}
 
