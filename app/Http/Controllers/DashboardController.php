@@ -65,7 +65,7 @@ $data = [
 $them = Student::firstOrNew(['user_id' => $data['user_id'],'school_id'=>$data['school_id']], $data);
 
 if (!$them->exists) {
-    $them->save();
+//    $them->save();
 }
 
 //if (!$parents->exists) {
