@@ -78,6 +78,7 @@ $parentUser = User::role('parent')->first();
 $faker = Faker::create();
 //if (!$parentUser) {
     // Create new parent user
+/*
     $parentUser = User::create([
         'name' => $faker->firstName . ' ' . $student->lname, // Provide appropriate name
         'email' =>'parent'.$them->id.'@gmail.com', // Provide appropriate email
@@ -88,7 +89,7 @@ $faker = Faker::create();
                     'zip' => $student->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
                     'created_at' => now(),
     ]);
-
+*/
     // Assign parent role
     $parentUser->assignRole($parentRole);
 //}
