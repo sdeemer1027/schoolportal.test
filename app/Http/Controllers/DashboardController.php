@@ -112,7 +112,7 @@ if ($them) {
     $them->parent_id = $parentUser->id;
     
     // Save the changes
-    $them->save();
+//    $them->save();
 }
 
 //dd($them,$student,$them->parent_id);
