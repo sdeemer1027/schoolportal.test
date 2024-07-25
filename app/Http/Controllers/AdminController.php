@@ -154,11 +154,11 @@ public function getschool($id){
 //dd($schools);
 
   $classrooms =Classroom::where('school_id','=',$schools->id)->get();
-// Check if the school has less than 25 classrooms
-        if ($classrooms->count() < 25) {
-            // Calculate the number of classrooms to add
-            $classroomsToAdd = 25 - $classrooms->count();
-// Define the schedule times and their names
+      // Check if the school has less than 25 classrooms
+           if ($classrooms->count() < 25) {
+               // Calculate the number of classrooms to add
+               $classroomsToAdd = 25 - $classrooms->count();
+            // Define the schedule times and their names
             $scheduleTimes = [
                 '08:00' => 'HomeRoom',
                 '08:15' => 'first',
@@ -188,10 +188,6 @@ public function getschool($id){
                     ]);
                 }
 
-
-
-
-
 $faker = Faker::create();
 $teacherUser = User::create([
                     'name' => $faker->name,
@@ -216,25 +212,15 @@ $teacherUser = User::create([
                 // Add other fields as needed
             ]);
 
- 
- 
-
             // Attach the teacher to the classroom_teacher pivot table
             $teacher->classrooms()->attach($classroom->id);
 
 
+        // Update the classroom schedule with the teacher ID
+        ClassroomSchedule::where('classroom_id', $classroom->id)
+            ->update(['teacher_id' => $teacher->id]);
 
-
-
-
-
-
-
-
-
-
-
-
+//dd($teacher->id,$classroom);
 
 
             }
@@ -275,42 +261,92 @@ $user = Auth::user(); // Get the currently logged-in user
     }
  }
 
-public function getclassroom($id){
-
-$classroom = Classroom::where('id', '=', $id)->with('teachers')->first();
-$teachers = Teacher::where('user_id','=',$classroom->teachers[0]->user_id)->with('user','classrooms')->get();
-
-$students = 'students';
-$schoolid = $classroom->teachers[0]->school_id;
-
-$students = User::whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            })
-                ->where('school_id', $schoolid)
-                ->leftJoin('schools', 'users.school_id', '=', 'schools.id') // Join the schools table
-                ->select('users.*', 'schools.name as school_name') // Select the school name as 'school_name'
-            ->get();
-
-$classsched = ClassroomSchedule::where('classroom_id',$id)->get();
 
 
 
 
-foreach($teachers as $school){
-        foreach($school->classrooms as $classroom){
-      //          <p>Teacher ID (from pivot): {{ $classroom->pivot->teacher_id }}</p>
-//dd($classroom->pivot->teacher_id);
 
+
+
+public function getclassroom($id)
+{
+    // Retrieve the classroom and its teachers
+    $classroom = Classroom::where('id', '=', $id)->with('teachers')->first();
+    $teachers = Teacher::where('user_id', '=', $classroom->teachers[0]->user_id)->with('user', 'classrooms')->get();
+
+    // Get the school ID from the teacher's information
+    $schoolid = $classroom->teachers[0]->school_id;
+
+    // Retrieve the students belonging to the same school
+    $students = User::whereHas('roles', function ($query) {
+        $query->where('name', 'student');
+    })
+    ->where('school_id', $schoolid)
+    ->leftJoin('schools', 'users.school_id', '=', 'schools.id') // Join the schools table
+    ->select('users.*', 'schools.name as school_name') // Select the school name as 'school_name'
+    ->get();
+
+    // Retrieve the classroom schedule
+    $classsched = ClassroomSchedule::where('classroom_id', $id)->get();
+
+    // Check if there are fewer than 10 students
+    if ($students->count() < 10) {
+        $studentsToAdd = 10 - $students->count();
+        $faker = Faker::create();
+
+        // Add the necessary number of students
+        for ($i = 0; $i < $studentsToAdd; $i++) {
+            $studentUser = User::create([
+                'name' => $faker->firstName . ' ' . $faker->lastName,
+                'fname' => $faker->firstName,
+                'lname' => $faker->lastName,
+                'phone' => $faker->phoneNumber,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('password'), // Change 'password' to the desired password
+                'address' => $faker->streetAddress,
+                'city' => '', // Assuming $classroom has a school relationship
+                'state' => '', // Assuming $classroom has a school relationship
+                'zip' => '', //$classroom->school->zip, // Assuming $classroom has a school relationship
+                'created_at' => now(),
+                'updated_at' => now(),
+                'school_id' => $schoolid,
+            ]);
+            $studentUser->assignRole('student');
+
+            $student = Student::create([
+                'user_id' => $studentUser->id,
+                'school_id' => $studentUser->school_id,
+                'parent_id' => '0',
+                // Add other fields as needed
+            ]);
+
+            // Attach the student to the classroom
+            $student->classrooms()->attach($classroom->id);
+
+            // Create the classroom schedule for HomeRoom
+            ClassroomSchedule::create([
+                'classroom_id' => $classroom->id,
+                'school_id' => $studentUser->school_id,
+                'name' => 'HomeRoom',
+                'schedule_time' => '08:00', // Assuming HomeRoom is at 08:00
+                'teacher_id' => $classroom->teachers[0]->id // Assuming the first teacher is assigned
+            ]);
         }
     }
 
+    // For debugging purposes
+    // dd($students);
 
+    // Retrieve teachers and classrooms
+    foreach ($teachers as $school) {
+        foreach ($school->classrooms as $classroom) {
+            // For debugging purposes
+            // dd($classroom->pivot->teacher_id);
+        }
+    }
 
-
-     return view('admin.getclassroom', compact('classroom','teachers','students','classsched'));
+    return view('admin.getclassroom', compact('classroom', 'teachers', 'students', 'classsched'));
 }
-
-
 
 
 

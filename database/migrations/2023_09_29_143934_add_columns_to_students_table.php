@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::table('students', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('parent_id'); // Link to School
-            $table->string('current_grade');
-            $table->string('current_gpa');
+            $table->unsignedBigInteger('parent_id')->nullable();; // Link to School
+            $table->string('current_grade')->nullable();;
+            $table->string('current_gpa')->nullable();;
 
         });
     }
