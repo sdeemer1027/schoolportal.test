@@ -14,10 +14,30 @@ Classroom For
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-black-900 dark:black-100">
 
-     {{$teachers}}
+     {{--$teachers--}}
 <hr>
-     {{$classroom}}          
 
+{{--$teachers->teacher_id-- }}
+
+@foreach ($teachers as $school)
+    <div>
+        <h2>School ID: {{ $school->school_id }}</h2>
+        <h3>Teacher: {{ $school->user->name }}</h3>
+        
+        @foreach ($school->classrooms as $classroom)
+            <div>
+                <p>Classroom ID: {{ $classroom->id }}</p>
+                <p>Teacher ID (from pivot): {{ $classroom->pivot->teacher_id }}</p>
+            </div>
+        @endforeach
+    </div>
+@endforeach
+--}}
+
+
+
+     {{--$classroom--}}          
+<!--
 <HR>
 <pre>
  "id":2428,
@@ -37,6 +57,7 @@ Classroom For
  "updated_at":"2024-03-07T21:25:10.000000Z",
  "school_name":"Hackettstown High School" 
 </pre>
+-->
 {{--$students
 
 
@@ -47,8 +68,29 @@ Classroom For
             </select>
 --}}
 
+{{--$students--}}
+
+
+
+ClassRoom Schedule: <BR>
+
+@foreach($classsched as $clas)
+
+[ID: {{$clas->id}}] Time : {{$clas->schedule_time}}<BR>
+
+@endforeach
+{{--$classsched--}}
+
+
+<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+
+
+
+
+
+
 @foreach($students as $student)
-{{$student}}
+{{--$student--}}
  <form action="{{ route('admin.assign_student_to_classroom', ['student' => $student->id, 'classroom' => $classroom->id]) }}" method="POST">
         @csrf
         <input type="text" name="classroom_id" value="{{ $classroom->id }}">
@@ -58,7 +100,7 @@ Classroom For
             <span>[ {{$student->id}} ]</span>
             <span>{{$student->fname}} {{$student->lname}}</span>
         </div>
-        <button type="submit">Assign to Classroom</button>
+        <button type="submit" class="btn btn-primary">Assign to Classroom</button>
     </form>
     <br>
 @endforeach

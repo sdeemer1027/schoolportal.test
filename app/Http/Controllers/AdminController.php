@@ -15,6 +15,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ClassroomStudent;
+use App\Models\ClassroomSchedule;
+use Faker\Factory as Faker;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class AdminController extends Controller
 {
@@ -52,19 +56,28 @@ if(!$findstu){
    ]);
 
    $findstu = Student::where('user_id' , $student)->first();
-}
-
-$findstu2 =ClassroomStudent::where('student_id' , $findstu->id)->first();
-
-if(!$findstu2){
-
-    ClassroomStudent::insert([
+ClassroomStudent::insert([
             'student_id' => $student->id, //$student,
             'classroom_id' => $classroom,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
 }
+
+//dd($findstu);
+
+//$findstu2 =ClassroomStudent::where('student_id' , $findstu->id)->first();
+
+//if(!$findstu2){
+
+//    ClassroomStudent::insert([
+//            'student_id' => $student->id, //$student,
+//            'classroom_id' => $classroom,
+//            'created_at' => now(),
+//           'updated_at' => now(),
+//        ]);
+//}
 
 
 
@@ -137,8 +150,101 @@ public function getschool($id){
   $user = Auth::user(); // Get the currently logged-in user
   $schools = School::where('id',$id)->First();
   $teachers = Teacher::where('school_id','=',$schools->id)->with('user','classrooms')->get();
+  $students = Student::where('school_id','=',$schools->id)->with('user','classrooms')->get();
+//dd($schools);
 
- return view('admin.getschool', compact('user','schools','teachers'));
+  $classrooms =Classroom::where('school_id','=',$schools->id)->get();
+// Check if the school has less than 25 classrooms
+        if ($classrooms->count() < 25) {
+            // Calculate the number of classrooms to add
+            $classroomsToAdd = 25 - $classrooms->count();
+// Define the schedule times and their names
+            $scheduleTimes = [
+                '08:00' => 'HomeRoom',
+                '08:15' => 'first',
+                '09:15' => 'second',
+                '10:15' => 'third',
+                '11:15' => 'fourth',
+                '12:15' => 'Lunch',
+                '13:00' => 'fifth',
+                '14:00' => 'sixth',
+                '15:00' => 'seventh'
+            ];
+
+            // Add the necessary number of classrooms
+            for ($i = 0; $i < $classroomsToAdd; $i++) {
+                $classroom = Classroom::create([
+                    'school_id' => $id,
+                ]);
+
+// Create schedules for the new classroom
+                foreach ($scheduleTimes as $time => $name) {
+//dd($scheduleTimes, $time, $name);
+                     ClassroomSchedule::create([
+                        'classroom_id' => $classroom->id,
+                        'school_id' => $id,
+                        'name' => $name,
+                        'schedule_time' => $time
+                    ]);
+                }
+
+
+
+
+
+$faker = Faker::create();
+$teacherUser = User::create([
+                    'name' => $faker->name,
+                    'fname' => $faker->firstName,
+                    'lname' => $faker->lastName,
+                    'phone' => $faker->phoneNumber,
+                    'email' => $faker->unique()->safeEmail,
+                    'password' => bcrypt('password'), // Change 'password' to the desired password
+                    'address' => $faker->streetAddress,
+                    'city' => $schools->city,
+                    'state' => $schools->state, //'FL',  // Generates a two-letter state abbreviation (e.g., "CA" for California)
+                    'zip' => $schools->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'school_id' => $id,
+                ]);
+                $teacherUser->assignRole('teacher');
+               
+ $teacher = Teacher::create([
+                'user_id'   => $teacherUser->id,
+                'school_id' => $teacherUser->school_id,
+                // Add other fields as needed
+            ]);
+
+ 
+ 
+
+            // Attach the teacher to the classroom_teacher pivot table
+            $teacher->classrooms()->attach($classroom->id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        }
+
+
+
+
+ return view('admin.getschool', compact('user','schools','teachers','classrooms'));
   }
 
 
@@ -185,23 +291,23 @@ $students = User::whereHas('roles', function ($query) {
                 ->select('users.*', 'schools.name as school_name') // Select the school name as 'school_name'
             ->get();
 
-foreach($students as $student){
-//Student::insert([
-//            'user_id' => $student->id,
-//            'school_id' => $schoolid,
-//            'created_at' => now(),
-//            'updated_at' => now(),
-//]);
-}
+$classsched = ClassroomSchedule::where('classroom_id',$id)->get();
 
-//dd($student->id,$schoolid);
 
-//dd($classroom,$teachers ,$students); //,$classroom->teachers[0]->user_id,$classroom->teachers[0]->school_id);
 
-//$teacher = Teacher::where('school_id','=',$schools->id)->with('user','classrooms')->get();
-// ,'teacher','students'
 
-     return view('admin.getclassroom', compact('classroom','teachers','students'));
+foreach($teachers as $school){
+        foreach($school->classrooms as $classroom){
+      //          <p>Teacher ID (from pivot): {{ $classroom->pivot->teacher_id }}</p>
+//dd($classroom->pivot->teacher_id);
+
+        }
+    }
+
+
+
+
+     return view('admin.getclassroom', compact('classroom','teachers','students','classsched'));
 }
 
 

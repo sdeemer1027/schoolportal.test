@@ -1,5 +1,53 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .image-map-container {
+            position: relative;
+            display: inline-block;
+            width: 650px;
+            height: 514px;
+        }
 
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+        .image-map-container img {
+            width: 650px;
+            height: 514px;
+            display: block;
+        }
+
+        .highlight {
+            position: absolute;
+            background: rgba(128, 128, 128, 0.1); /* Gray with some transparency */
+            transition: background 0.3s ease;
+        }
+
+        /* Define the positions and sizes of the highlights */
+        .highlight-homeroom { top: 394px; left: 509px; width: 68px; height: 64px; }
+        .highlight-firstperiod { top: 392px; left: 408px; width: 66px; height: 68px; }
+        .highlight-secondperiod { top: 311px; left: 412px; width: 62px; height: 73px; }
+        .highlight-thirdperiod { top: 311px; left: 506px; width: 67px; height: 75px; }
+        .highlight-fourthperiod { top: 238px; left: 505px; width: 67px; height: 67px; }
+        .highlight-finalperiod { top: 240px; left: 414px; width: 56px; height: 64px; }
+        .highlight-bathroombreak { top: 51px; left: 60px; width: 149px; height: 71px; }
+        .highlight-mainoffice { top: 203px; left: 30px; width: 91px; height: 68px; }
+        .highlight-mutimedia1 { top: 52px; left: 360px; width: 69px; height: 71px; }
+        .highlight-mutimedia2 { top: 52px; left: 439px; width: 70px; height: 68px; }
+        .highlight-break { top: 50px; left: 218px; width: 32px; height: 77px; }
+        .highlight-counsil { top: 50px; left: 253px; width: 27px; height: 73px; }
+        .highlight-medical { top: 48px; left: 288px; width: 27px; height: 74px; }
+        .highlight-art { top: 88px; left: 519px; width: 72px; height: 83px; }
+        .highlight-music { top: 114px; left: 557px; width: 63px; height: 94px; }
+        .highlight-gym { top: 148px; left: 357px; width: 165px; height: 60px; }
+        .highlight-lunch { top: 154px; left: 150px; width: 108px; height: 118px; }
+
+        /* Hover effect */
+        .highlight:hover {
+            background: rgba(128, 128, 128, 0.7); /* Darker gray on hover */
+        }
+    </style>
+
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -16,9 +64,19 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+<x-nav-link   href="#" data-toggle="modal" data-target="#schoolModal">
+                        School
+                    </x-nav-link>
+{{--
 
 
-                </div>
+<x-nav-link :href="#" data-toggle="modal" data-target="#schoolModal" >
+    {{ __('School') }}
+</x-nav-link>
+
+--}}
+
+                                    </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -118,3 +176,44 @@
         </div>
     </div>
 </nav>
+<!-- Modal -->
+<div class="modal fade" id="schoolModal" tabindex="-1" role="dialog" aria-labelledby="schoolModalLabel" aria-hidden="true">
+
+
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="schoolModalLabel">School Layout</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="image-map-container">
+                    <img src="/img/school-layout.png" usemap="#image-map">
+                    <!-- Overlay divs -->
+                    <a href="{{route('homeroom')}}" class="highlight highlight-homeroom"></a>
+                    <a href="firstperiod.blade.php" class="highlight highlight-firstperiod"></a>
+                    <a href="secondperiod.blade.php" class="highlight highlight-secondperiod"></a>
+                    <a href="thirdperiod.blade.php" class="highlight highlight-thirdperiod"></a>
+                    <a href="fourthperiod.blade.php" class="highlight highlight-fourthperiod"></a>
+                    <a href="5period" class="highlight highlight-finalperiod"></a>
+                    <a href="bathroom" class="highlight highlight-bathroombreak"></a>
+                    <a href="office" class="highlight highlight-mainoffice"></a>
+                    <a href="mutimedia1" class="highlight highlight-mutimedia1"></a>
+                    <a href="mutimedia2" class="highlight highlight-mutimedia2"></a>
+                    <a href="break" class="highlight highlight-break"></a>
+                    <a href="counsil" class="highlight highlight-counsil"></a>
+                    <a href="medical" class="highlight highlight-medical"></a>
+                    <a href="art" class="highlight highlight-art"></a>
+                    <a href="music" class="highlight highlight-music"></a>
+                    <a href="gym" class="highlight highlight-gym"></a>
+                    <a href="lunch" class="highlight highlight-lunch"></a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,9 +5,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
+
+
+
 class Classroom extends Model
 {
     // ... other model code
+
+ protected $fillable = [
+        'school_id',
+        
+    ];
+
+
+
+
+
+
+
 
     public function teachers()
     {
@@ -21,8 +37,10 @@ class Classroom extends Model
         return $this->belongsToMany(Student::class, 'classroom_students');
     }
 
-//     public function students()
-//    {
-//        return $this->belongsToMany(Student::class, 'classroom_students');
-//    }
+      // Define the relationship with schedules
+    public function schedules()
+    {
+        return $this->hasMany(ClassroomSchedule::class);
+    }
+
 }

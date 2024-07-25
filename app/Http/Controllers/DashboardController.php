@@ -54,79 +54,7 @@ if ($user->hasRole('admin')) {
 
 //dd($students);
 
-foreach($students as $student){
 
-$data = [
-    'user_id' => $student->id,
-    'school_id' => $student->school_id,
-    // Add other fields as needed
-];
-
-$them = Student::firstOrNew(['user_id' => $data['user_id'],'school_id'=>$data['school_id']], $data);
-
-if (!$them->exists) {
-//    $them->save();
-}
-
-//if (!$parents->exists) {
-//    dd($student);
-//}
-if($them->parent_id == null){
-// Check if a parent role exists
-$parentRole = Role::where('name', 'parent')->first();
-$parentUser = User::role('parent')->first();
-$faker = Faker::create();
-//if (!$parentUser) {
-    // Create new parent user
-/*
-    $parentUser = User::create([
-        'name' => $faker->firstName . ' ' . $student->lname, // Provide appropriate name
-        'email' =>'parent'.$them->id.'@gmail.com', // Provide appropriate email
-        'password' => bcrypt('password'), // Provide appropriate password
-        'address' => $student->address,
-                    'city' => $student->city,
-                    'state' => $student->state, //'FL',  // Generates a two-letter state abbreviation (e.g., "CA" for California)
-                    'zip' => $student->zip, //$faker->postcode, // Generates a ZIP code (e.g., "12345")
-                    'created_at' => now(),
-    ]);
-*/
-    // Assign parent role
-    $parentUser->assignRole($parentRole);
-//}
-
-//dd($parentUser->id);
-
-// Fetch the user by ID
-//$user = User::find($id);
-
-if ($student) {
-    // Update the name field by combining fname and lname
-    $student->name = $student->fname . ' ' . $student->lname;
-    
-    // Save the changes
-    $student->save();
-}
-
-if ($them) {
-    // Update the name field by combining fname and lname
-    $them->parent_id = $parentUser->id;
-    
-    // Save the changes
-//    $them->save();
-}
-
-//dd($them,$student,$them->parent_id);
-
-
-}
-
-
-
-
-
-
-//dd($data,$student);
-}
 
 
 //dd($parents,$teachers,$students);

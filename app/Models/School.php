@@ -16,4 +16,10 @@ class School extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    // Define the relationship with classrooms
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class);
+    }
 }

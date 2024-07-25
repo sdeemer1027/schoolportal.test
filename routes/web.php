@@ -8,6 +8,7 @@ use App\Http\Controllers\StudentInfoController;
 use App\Http\Controllers\ClassroomSessionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\SchoolController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,8 @@ Route::prefix('classroom-sessions')->group(function () {
 
 
 Route::get('parent/family', [ParentController::class, 'showFamily'])->name('parent.family');
+Route::get('/schools', [SchoolController::class, 'index'])->name('school');
+Route::get('/schools/homeroom', [SchoolController::class, 'homeroom'])->name('homeroom');
 
 
 

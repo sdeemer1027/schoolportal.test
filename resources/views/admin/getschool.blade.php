@@ -29,9 +29,11 @@
 @endforeach
 
 {{--$teachers--}}
-
+<HR>
+<b>Classrooms:</b><BR>
+{{$classrooms}}
 <BR><BR>
-                  {{$schools}}
+                  {{--$schools--}}
                 </div>
 
               
