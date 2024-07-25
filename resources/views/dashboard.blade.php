@@ -1,10 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-black-800 dark:text-back-200 leading-tight">
+        <h2 class="font-semibold">
             @if (auth()->user()->hasRole('teacher'))
             Teachers
-
-
             @endif
             {{ __('Dashboard') }}
                 @if (auth()->user()->hasRole('parent'))
@@ -24,9 +22,7 @@
 
 
 
-                @if (auth()->user()->hasRole('admin'))
-              
-                   {{$user}}
+                @if (auth()->user()->hasRole('admin'))              
                    <hr>
                    <a href="{{route('admin.schools')}}" class="btn btn-primary">Schools</a>
                 @endif

@@ -83,7 +83,9 @@ color:white;
     <div class="relative bg-black">
         <div class="bg-blue-500 h-16 flex items-center justify-between px-6 text-white">
             <!-- Logo on the top left -->
-            <div class="text-lg font-semibold" style="width:90%">Public School Portal  </div>
+            <div class="text-lg font-semibold" style="width:90%">
+                <img src="/evetslogo.png" width="75px;">
+            Public School Portal  </div>
             <!-- "Log in" and "Register" links on the right -->
             <div>
                 @if (Route::has('login'))

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>SchoolPortal.LIVE</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -72,24 +72,25 @@
                 font-size:13px;
             }
 
-
+.mainbg{
+    background-image: url('/img/inner1.jpg');
+                background-size: cover;
+                background-attachment: fixed;
+}
 
         </style>
-
-
-
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 
 
 
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-black dark:bg-gray-900">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
+                <header class="bg-black text-white shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -97,7 +98,7 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="mainbg">
                 {{ $slot }}
             </main>
         </div>
