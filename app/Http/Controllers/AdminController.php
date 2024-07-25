@@ -149,7 +149,7 @@ public function assignStudentToClassroom(Request $request, Student $student, Cla
 public function getschool($id){
   $user = Auth::user(); // Get the currently logged-in user
   $schools = School::where('id',$id)->First();
-  $teachers = Teacher::where('school_id','=',$schools->id)->with('user','classrooms')->get();
+  $teachers = Teacher::where('school_id','=',$schools->id)->with('user','classrooms')->paginate(10);
   $students = Student::where('school_id','=',$schools->id)->with('user','classrooms')->get();
 //dd($schools);
 
