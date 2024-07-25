@@ -251,7 +251,7 @@ $teacherUser = User::create([
 
  public function findschool($stateabv){
     $user = Auth::user(); // Get the currently logged-in user
-    $schools = School::where('state',$stateabv)->get();
+    $schools = School::where('state',$stateabv)->paginate(10); //->get();
 
      return view('admin.schoolsbystate', compact('user','schools'));
  }
@@ -311,7 +311,53 @@ foreach($teachers as $school){
 }
 
 
- 
+
+
+
+
+
+
+
+
+  public function editteacher(Teacher $teacher)
+    {
+
+
+$data = User::where('id', $teacher->user_id)->first();
+//dd($teacher,$data);
+
+        return view('admin.teachers.edit', compact('teacher','data'));
+    }
+
+    public function updateteacher(Request $request, Teacher $teacher)
+    {
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $teacher->user_id, // Assuming user_id is the foreign key
+            'phone' => 'nullable|string|max:20',
+            // Add other validation rules as needed
+        ]);
+
+        // Update the teacher information
+//        $teacher->name = $request->name;
+//        $teacher->phone = $request->phone;
+//        $teacher->save();
+
+        // Update the associated user's email
+        $user = $teacher->user; // Assuming there's a user relationship defined in the Teacher model
+        $user->name = $request->name;
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->save();
+
+     return redirect()->route('dashboard')->with('success', 'Teacher information updated successfully.');
+      //  return redirect()->route('admin.teachers.edit', $teacher)->with('success', 'Teacher information updated successfully.');
+    }
 
 
 

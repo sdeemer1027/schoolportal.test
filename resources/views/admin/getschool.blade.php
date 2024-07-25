@@ -16,6 +16,8 @@
  {{$schools->address}}<BR><BR>
 <b>Teachers</b><BR>
 @foreach($teachers as $teacher)
+
+<a href="{{route('admin.teachers.edit', ['teacher' => $teacher->id])}}"> [ <i class="fas fa-pencil-alt"></i> ]</a>
 {{$teacher->user->name}} 
 [Classroom 
    @foreach($teacher->classrooms as $class)

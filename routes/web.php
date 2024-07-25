@@ -40,6 +40,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/admin/schools', [AdminController::class, 'schools'])->name('admin.schools');
 
     Route::post('/hire-teacher', [AdminController::class, 'hireTeacher'])->name('admin.hire_teacher');
+    
+Route::get('/admin/teachers/{teacher}/edit', [AdminController::class, 'editteacher'])->name('admin.teachers.edit');
+Route::put('admin/teachers/{teacher}', [AdminController::class, 'updateteacher'])->name('admin.teachers.update');
+
+
     Route::post('/assign-teacher-to-classroom/{teacher}/{classroom}', [AdminController::class, 'assignTeacherToClassroom'])->name('admin.assign_teacher_to_classroom');
  
  Route::post('/assign-student-to-classroom/{student}/{classroom}', [AdminController::class, 'testassing'])->name('admin.assign_student_to_classroom');

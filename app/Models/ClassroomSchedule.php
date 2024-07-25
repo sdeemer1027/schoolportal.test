@@ -20,6 +20,7 @@ class ClassroomSchedule extends Model
         'teacher_id',
         'student_id',
         'schedule_time',
+        'name',
     ];
 
     // Define the relationships if needed

@@ -15,6 +15,7 @@ class CreateClassroomSchedulesTable extends Migration
             $table->foreignId('teacher_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('student_id')->nullable()->constrained()->onDelete('cascade');
             $table->time('schedule_time'); // Store the schedule time for each class period
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

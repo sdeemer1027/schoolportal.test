@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-black-200 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
 Classroom For 
 @foreach($teachers as $teacher)
 {{$teacher->user->name}}
@@ -9,16 +9,11 @@ Classroom For
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-black-900 dark:black-100">
-
-     {{--$teachers--}}
-<hr>
-
-{{--$teachers->teacher_id-- }}
-
+{{--
 @foreach ($teachers as $school)
     <div>
         <h2>School ID: {{ $school->school_id }}</h2>
@@ -33,34 +28,8 @@ Classroom For
     </div>
 @endforeach
 --}}
-
-
-
      {{--$classroom--}}          
-<!--
-<HR>
-<pre>
- "id":2428,
- "school_id":"70220",
- "name":"Rashad Johnson",
- "fname":"Katelynn",
- "lname":"Koss",
- "phone":"+1.785.345.6516",
- "address":"976 Mia River Apt. 186",
- "address2":null,
- "city":"HACKETTSTOWN",
- "state":"NJ",
- "zip":"07840",
- "email":"simonis.jaden@example.org",
- "email_verified_at":null,
- "created_at":"2024-03-07T21:25:10.000000Z",
- "updated_at":"2024-03-07T21:25:10.000000Z",
- "school_name":"Hackettstown High School" 
-</pre>
--->
 {{--$students
-
-
 <select name="classroom_id" id="classroom_{{$student->id}}">
                 @foreach($classrooms as $classroom)
                     <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -71,12 +40,11 @@ Classroom For
 {{--$students--}}
 
 
-
 ClassRoom Schedule: <BR>
 
 @foreach($classsched as $clas)
 
-[ID: {{$clas->id}}] Time : {{$clas->schedule_time}}<BR>
+[ID: {{$clas->id}}] Time : {{$clas->schedule_time}} {{$clas->schedule_name}}<BR>
 
 @endforeach
 {{--$classsched--}}

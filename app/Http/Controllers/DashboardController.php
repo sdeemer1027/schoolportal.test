@@ -47,9 +47,9 @@ if ($user->hasRole('admin')) {
         $query->where('name', 'parent');
     });
 
-    $teachers = $teachersQuery->get();
-    $students = $studentsQuery->get();
-    $parents = $parentsQuery->get();
+    $teachers = $teachersQuery->paginate(10); //->get();
+    $students = $studentsQuery->paginate(10); //->get();
+    $parents = $parentsQuery->paginate(10); //->get();
     $schoolName =[];
 
 //dd($students);
