@@ -59,6 +59,8 @@
                                 @endforeach
                             </ul>
                         @endif
+
+                        {{$students}}
                     </div>
                 </div>
 

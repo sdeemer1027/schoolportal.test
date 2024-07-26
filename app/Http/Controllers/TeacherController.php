@@ -30,11 +30,9 @@ class TeacherController extends Controller
         $query->where('teacher_id', $user->id);
     })->with('teachers')->get();
 
-//$schedule = ClassroomSchedule::where()
+$schedule = ClassroomSchedule::where('teacher_id', $user->id)->with('student')->get();
 
-//dd($classrooms);
-
-
+//dd($schedule);
 
 
 
@@ -46,7 +44,9 @@ class TeacherController extends Controller
 
 
 
-        return view('teacher.homeroom', compact('user','classrooms'));
+
+
+        return view('teacher.homeroom', compact('user','classrooms','schedule'));
 
    }
 }
