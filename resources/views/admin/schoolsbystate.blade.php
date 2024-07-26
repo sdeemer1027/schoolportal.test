@@ -41,8 +41,6 @@
         </div>
     </div>
     <script>
-
-
         $(document).ready(function() {
             $('#schoolTable').DataTable({
                 "paging": true,
@@ -50,8 +48,7 @@
                 "searching": true,
                 // Add more options as needed
             });
-        });
-        
+        });       
 
     </script>
 </x-app-layout>

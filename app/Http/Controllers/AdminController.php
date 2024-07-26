@@ -266,8 +266,6 @@ $user = Auth::user(); // Get the currently logged-in user
 
 
 
-
-
 public function getclassroom($id)
 {
     // Retrieve the classroom and its teachers
@@ -277,8 +275,8 @@ public function getclassroom($id)
     // Get the school ID from the teacher's information
     $schoolid = $classroom->teachers[0]->school_id;
 
-    // Retrieve the students belonging to the same school
-    $students = User::whereHas('roles', function ($query) {
+    // Retrieve all students in the school
+    $allStudents = User::whereHas('roles', function ($query) {
         $query->where('name', 'student');
     })
     ->where('school_id', $schoolid)
@@ -286,15 +284,17 @@ public function getclassroom($id)
     ->select('users.*', 'schools.name as school_name') // Select the school name as 'school_name'
     ->get();
 
-    // Retrieve the classroom schedule
-    $classsched = ClassroomSchedule::where('classroom_id', $id)->get();
+    // Retrieve the students assigned to the specified classroom as HomeRoom
+    $classroomStudents = Student::whereHas('classrooms', function ($query) use ($id) {
+        $query->where('classroom_id', $id);
+    })->get();
 
-    // Check if there are fewer than 10 students
-    if ($students->count() < 10) {
-        $studentsToAdd = 10 - $students->count();
+    // Check if there are fewer than 10 students in the classroom
+    if ($classroomStudents->count() < 10) {
+        $studentsToAdd = 10 - $classroomStudents->count();
         $faker = Faker::create();
 
-        // Add the necessary number of students
+        // Add the necessary number of fake students
         for ($i = 0; $i < $studentsToAdd; $i++) {
             $studentUser = User::create([
                 'name' => $faker->firstName . ' ' . $faker->lastName,
@@ -304,9 +304,9 @@ public function getclassroom($id)
                 'email' => $faker->unique()->safeEmail,
                 'password' => bcrypt('password'), // Change 'password' to the desired password
                 'address' => $faker->streetAddress,
-                'city' => '', // Assuming $classroom has a school relationship
-                'state' => '', // Assuming $classroom has a school relationship
-                'zip' => '', //$classroom->school->zip, // Assuming $classroom has a school relationship
+                'city' => '',
+                'state' => '',
+                'zip' => '',
                 'created_at' => now(),
                 'updated_at' => now(),
                 'school_id' => $schoolid,
@@ -316,38 +316,41 @@ public function getclassroom($id)
             $student = Student::create([
                 'user_id' => $studentUser->id,
                 'school_id' => $studentUser->school_id,
-                'parent_id' => '0',
-                // Add other fields as needed
+                'parent_id' => null,
+                'current_grade' => 'N/A',
+                'current_gpa' => 'N/A',
             ]);
 
             // Attach the student to the classroom
             $student->classrooms()->attach($classroom->id);
 
-            // Create the classroom schedule for HomeRoom
-            ClassroomSchedule::create([
-                'classroom_id' => $classroom->id,
-                'school_id' => $studentUser->school_id,
-                'name' => 'HomeRoom',
-                'schedule_time' => '08:00', // Assuming HomeRoom is at 08:00
-                'teacher_id' => $classroom->teachers[0]->id // Assuming the first teacher is assigned
-            ]);
+            // Create the HomeRoom schedule for the fake student
+            ClassroomSchedule::updateOrCreate(
+                [
+                    'classroom_id' => $classroom->id,
+                    'school_id' => $studentUser->school_id,
+                    'name' => 'HomeRoom',
+                    'schedule_time' => '08:00',
+                ],
+                [
+                    'student_id' => $student->id,
+                    'teacher_id' => $classroom->teachers[0]->id
+                ]
+            );
         }
+
+        // Refresh the classroom students list to include the newly added students
+        $classroomStudents = Student::whereHas('classrooms', function ($query) use ($id) {
+            $query->where('classroom_id', $id);
+        })->with('users')->get();
     }
 
-    // For debugging purposes
-    // dd($students);
+//dd($classroomStudents,$allStudents);
 
-    // Retrieve teachers and classrooms
-    foreach ($teachers as $school) {
-        foreach ($school->classrooms as $classroom) {
-            // For debugging purposes
-            // dd($classroom->pivot->teacher_id);
-        }
-    }
 
-    return view('admin.getclassroom', compact('classroom', 'teachers', 'students', 'classsched'));
+
+    return view('admin.getclassroom', compact('classroom', 'teachers', 'allStudents', 'classroomStudents'));
 }
-
 
 
 
