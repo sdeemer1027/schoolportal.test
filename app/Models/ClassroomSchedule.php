@@ -24,10 +24,10 @@ class ClassroomSchedule extends Model
     ];
 
     // Define the relationships if needed
-    public function classroom()
-    {
-        return $this->belongsTo(Classroom::class);
-    }
+//    public function classroom()
+//    {
+//        return $this->belongsTo(Classroom::class);
+//    }
 
     public function school()
     {
@@ -43,4 +43,25 @@ class ClassroomSchedule extends Model
     {
         return $this->belongsTo(User::class, 'student_id');
     }
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'classroom_schedule_student', 'schedule_id', 'student_id');
+    }
+
+
+  // Define the relationship with Student if a many-to-many relationship exists
+ //   public function students()
+  //  {
+ //       return $this->belongsToMany(Student::class, 'classroom_schedule_student', 'classroom_schedule_id', 'student_id');
+ //   }
+
+    // Define the relationship with Classroom
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class, 'classroom_id');
+    }
+
+
+
+
 }

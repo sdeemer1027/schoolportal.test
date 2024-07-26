@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Faker\Factory as Faker;
+use App\Models\ClassroomSchedule;
+use App\Models\Classroom;
 //use App\User;
 
 class DashboardController extends Controller
@@ -52,41 +54,6 @@ if ($user->hasRole('admin')) {
     $parents = $parentsQuery->paginate(10); //->get();
     $schoolName =[];
 
-//dd($students);
-
-
-
-
-//dd($parents,$teachers,$students);
-
-/*
-//////////////////////////////////
-
-// Check if a parent role exists
-$parentRole = Role::where('name', 'parent')->first();
-$parentUser = User::role('parent')->first();
-
-if (!$parentUser) {
-    // Create new parent user
-    $parentUser = User::create([
-        'name' => 'Parent User', // Provide appropriate name
-        'email' => 'parent@example.com', // Provide appropriate email
-        'password' => bcrypt('password'), // Provide appropriate password
-    ]);
-
-    // Assign parent role
-    $parentUser->assignRole($parentRole);
-}
-
-
-
-
-//////////////////////////////////////////
-
-*/
-
-
-
 
 
 
@@ -95,7 +62,7 @@ if (!$parentUser) {
 return view('dashboardadmin', compact('teachers', 'students','user','schoolName'));
 
 
-}
+          }
 
 // teacher role
 if ($user->hasRole('teacher')) {
@@ -127,7 +94,7 @@ if ($user->hasRole('teacher')) {
                 ->select('users.*', 'schools.name as school_name') // Select the school name as 'school_name'
             ->get();
 
-}
+         }
 //end teacher role
 
 // parent role
@@ -168,15 +135,38 @@ if ($user->hasRole('teacher')) {
         }
 //end parent role
 
+//Start Student Role
+        $user = Auth::user();
          if ($user->hasRole('student')) {
             $student= Student::where('user_id', $user->id)
             ->with('classrooms')
-            ->get();
-               //->with('parents')
-         //dd($student,$user);
+            ->first();
+               
+          $schoolName = $student->classrooms->first()->school->name ?? '';
 
-             return view('dashboardstudent', compact('teachers', 'user','schoolName','student'));
-        }
+        // Get the current time and date of the user's computer
+        $now = now();
+
+        // Get classroom schedules for the student
+        $classschedule = ClassroomSchedule::whereHas('student', function ($query) use ($student) {
+            $query->where('student_id', $student->id);
+        })
+        ->orderBy('schedule_time', 'asc')
+        ->get();
+  // Fetch the classroom details for each schedule
+        $classrooms = Classroom::whereIn('id', $classschedule->pluck('classroom_id'))->get()->keyBy('id');
+
+//dd($classrooms);
+               
+
+
+           // $currentTime = now()->toDateTimeString(); // Get the current time
+
+             return view('dashboardstudent', compact('teachers', 'user','schoolName','student','classschedule','now','classrooms'));
+            }
+//End Student Role
+
+
 
 $studentinnfo= '';
 

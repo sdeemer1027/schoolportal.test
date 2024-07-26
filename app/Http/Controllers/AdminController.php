@@ -342,7 +342,7 @@ public function getclassroom($id)
         // Refresh the classroom students list to include the newly added students
         $classroomStudents = Student::whereHas('classrooms', function ($query) use ($id) {
             $query->where('classroom_id', $id);
-        })->with('users')->get();
+        })->with('user')->get();
     }
 
 //dd($classroomStudents,$allStudents);

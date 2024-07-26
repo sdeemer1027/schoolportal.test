@@ -9,6 +9,7 @@ use App\Http\Controllers\ClassroomSessionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\ClassroomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,6 @@ Route::get('parent/family', [ParentController::class, 'showFamily'])->name('pare
 Route::get('/schools', [SchoolController::class, 'index'])->name('school');
 Route::get('/schools/homeroom', [SchoolController::class, 'homeroom'])->name('homeroom');
 
-
+Route::get('/class/{id}', [ClassroomController::class, 'show'])->name('classroom.show');
 
 require __DIR__.'/auth.php';

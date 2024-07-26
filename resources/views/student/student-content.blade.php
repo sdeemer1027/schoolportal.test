@@ -5,7 +5,7 @@
 
         Your Profile has a zipcode of {{$user->zip}}:
 
-        
+        {{--$user--}}
 
     </div>
 
