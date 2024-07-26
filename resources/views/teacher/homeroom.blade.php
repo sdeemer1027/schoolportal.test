@@ -43,6 +43,21 @@
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+
+<div class="profile">
+{{--
+        @if (Auth::user()->profile_picture)
+            <img src="{{ Storage::url('profile_pictures/' . Auth::user()->profile_picture) }}" alt="Profile Picture" class="rounded-full w-24 h-24">
+        @else
+            <img src="{{ asset('default-avatar.png') }}" alt="Default Avatar" class="rounded-full w-24 h-24">
+        @endif
+--}}
+    </div>
+
+
+
+
+
                 <div class="sticky-container">
                     <!-- Top row of students -->
                     <div class="student-row" id="top-row">

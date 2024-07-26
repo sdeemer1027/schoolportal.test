@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -74,7 +75,55 @@ $zipinfo= DB::table('zipcodes')->where('zip',$userZip)->first();
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
+        
+
+
+
+
+$request->validate([
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // Other validation rules
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old profile picture if it exists
+            if ($user->profile_picture) {
+                Storage::delete('public/profile_pictures/' . $user->profile_picture);
+            }
+
+            // Store the new profile picture
+            $file = $request->file('profile_picture');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/profile_pictures', $filename);
+
+            // Update user profile picture in the database
+            $user->profile_picture = $filename;
+            $user->save();
+        }
+
+
+
+
+
+
+
+
         $user = $request->user();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Update the user's zip attribute
         $user->zip = $request->input('zip');
@@ -86,6 +135,21 @@ $zipinfo= DB::table('zipcodes')->where('zip',$userZip)->first();
 
 
         $request->user()->fill($request->validated());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  //       dd($request);

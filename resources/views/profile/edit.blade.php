@@ -8,6 +8,33 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+
+  <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        
+        <div class="mb-4">
+            <label for="profile_picture" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+            <input type="file" id="profile_picture" name="profile_picture" class="mt-1 block w-full">
+        </div>
+
+        <!-- Other form fields -->
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+    </form>
+
+
+
+
+
+
+
+
+
+
+
+            
 {{--
             @if(isset($user->zip) && $user->zip !== '')
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
