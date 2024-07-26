@@ -304,9 +304,9 @@ public function getclassroom($id)
                 'email' => $faker->unique()->safeEmail,
                 'password' => bcrypt('password'), // Change 'password' to the desired password
                 'address' => $faker->streetAddress,
-                'city' => '',
-                'state' => '',
-                'zip' => '',
+                'city' => 'any',
+                'state' => 'FL',
+                'zip' => '33020',
                 'created_at' => now(),
                 'updated_at' => now(),
                 'school_id' => $schoolid,

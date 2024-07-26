@@ -18,7 +18,7 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
-/*
+
      public function classrooms()
     {
         return $this->belongsToMany(Classroom::class, 'classroom_students');
@@ -28,9 +28,9 @@ class Student extends Model
     {
         return $this->hasMany(ClassroomSchedule::class, 'student_id');
     }
-*/
-    
 
+    
+/*
 
     // Define a relationship if students are linked through a pivot table
     public function classroomSchedules()
@@ -43,5 +43,5 @@ class Student extends Model
     {
         return $this->belongsToMany(Classroom::class, 'classroom_student');
     }
-   
+   */
 }
