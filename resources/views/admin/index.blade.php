@@ -15,8 +15,10 @@
                 <div class="p-6 text-gray-900 dark:text-white-100">
                   {{--$studentInfos--}}
 @foreach($states as $state)
-<a href="{{route('admin.schoolsbystate', ['stateabv' => $state->stateabv])}}">{{$state->statename}} </a><BR>
+[ {{$state->school_count}} ] <a href="{{route('admin.schoolsbystate', ['stateabv' => $state->stateabv])}}">{{$state->statename}} </a><BR>
 @endforeach
+
+{{--$states--}}
                 </div>     
             </div>
         </div>

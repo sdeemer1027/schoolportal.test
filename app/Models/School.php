@@ -22,4 +22,10 @@ class School extends Model
     {
         return $this->hasMany(Classroom::class);
     }
+public function zipcode()
+{
+    return $this->belongsTo(Zipcode::class);
+}
+
+    
 }

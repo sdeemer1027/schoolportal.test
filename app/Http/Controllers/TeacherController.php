@@ -44,8 +44,6 @@ $schedule = ClassroomSchedule::where('teacher_id', $user->id)->with('student')->
 
 
 
-
-
         return view('teacher.homeroom', compact('user','classrooms','schedule'));
 
    }

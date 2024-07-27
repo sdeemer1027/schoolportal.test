@@ -25,4 +25,10 @@ class Zipcode extends Model
 "status",
     ];
 
+public function schools()
+{
+    return $this->hasMany(School::class);
+}
+
+
 }

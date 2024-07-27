@@ -251,10 +251,42 @@ $user = Auth::user(); // Get the currently logged-in user
     }  
     if($role->name == 'admin'){
 //        $schools = School::where('state','FL')->get();
-        $states= Zipcode::select('statename', 'stateabv')
-            ->groupBy('statename', 'stateabv')
-            ->get(); 
- 
+
+//        $states= Zipcode::select('statename', 'stateabv')
+//            ->groupBy('statename', 'stateabv')
+//            ->get(); 
+ /*
+$states = Zipcode::select('zipcodes.statename', 'zipcodes.stateabv')
+    ->join('schools', 'schools.zip', '=', 'zipcodes.id')
+    ->groupBy('zipcodes.statename', 'zipcodes.stateabv')
+    ->havingRaw('COUNT(schools.id) > 0')
+    ->orderBy('zipcodes.statename')
+    ->get();
+
+
+$states = \DB::table('schools')
+    ->select('state')
+    ->groupBy('state')
+    ->orderBy('state')
+    ->get();
+
+$states = DB::table('schools')
+    ->join('zipcodes', 'schools.zip', '=', 'zipcodes.id') // Adjust this join condition as necessary
+    ->select('zipcodes.statename', 'zipcodes.stateabv')
+    ->groupBy('zipcodes.statename', 'zipcodes.stateabv')
+    ->orderBy('zipcodes.statename')
+    ->get();
+*/
+
+$states = DB::table('schools')
+    ->join('zipcodes', 'schools.zip', '=', 'zipcodes.id') // Adjust this join condition as necessary
+    ->select('zipcodes.statename', 'zipcodes.stateabv', DB::raw('COUNT(schools.id) as school_count'))
+    ->groupBy('zipcodes.statename', 'zipcodes.stateabv')
+    ->orderBy('zipcodes.statename')
+    ->get();
+
+
+
  return view('admin.index', compact('user','roles','states'));
     }else{
      dd($roles , $role->name);

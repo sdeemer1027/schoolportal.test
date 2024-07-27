@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         // Create roles
         Role::create(['name' => 'admin']); //Main Admin
         Role::create(['name' => 'employee']); //Admin Employee
+        Role::create(['name' => 'superadmin']); //Super intendent of each school
         Role::create(['name' => 'teacher']);  //Teachers
         Role::create(['name' => 'coach']);    //Coaches
         Role::create(['name' => 'counselor']); // Guidance  Counselors
